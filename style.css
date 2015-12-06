@@ -4,11 +4,19 @@ body {
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover;
+	  margin-bottom: 0px;
+	  height: 100%;
+	  margin-right: 0px;
 }
-img {
+img #logo {
     max-width: 100%;
 }
-
+img #baby {
+	max-width: 100%;
+}
+img #santa {
+	max-width: 100%;
+}
 .button-link {
     float: center;
     padding: 10px 15px;
@@ -65,4 +73,26 @@ img {
     margin-bottom: 4px;
     display: block;
        width:125px;
+}
+#snowflakeContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.snowflake {
+    padding-left: 15px;
+    font-family: Cambria, Georgia, serif;
+    font-size: 14px;
+    line-height: 24px;
+    position: fixed;
+    color: #82FFFF;
+    user-select: none;
+    z-index: 1000;
+}
+.snowflake:hover {
+    cursor: default;
+}
+footer {
+	text-align: right;
+	padding-top: 3.3%;
 }
