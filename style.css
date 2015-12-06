@@ -53,6 +53,7 @@ img {
     margin-bottom: 4px;
     display: block;
     margin-left: auto;
+    width:125px;
 }
 
 #right{
@@ -63,4 +64,5 @@ img {
 #right button {
     margin-bottom: 4px;
     display: block;
+       width:125px;
 }
