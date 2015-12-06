@@ -1,46 +1,127 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        #map {
+        width: 97vw;
+        height: 97vh;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb7up_GNBuZgdHir7_IAo6fOD4krA1zZc&signed_in=true"></script>
+    <script>
+        var globalPosition;
+        getLocation()
+        google.maps.event.addDomListener(window, 'load', timeout);
+
+        function timeout(){
+            setTimeout(initialize, 3000);
+        }
+
+        function initialize() {
+
+            console.log("outer");
+            console.log(globalPosition);
+            var mapCanvas = document.getElementById('map');
+
+            var quotes = [
+            "Y'all mothafuckas need Jesus.",
+            "If you love something, never do it for free.",
+            "Jet fuel can't melt steel beams.",
+            "Don't be a cunt.",
+            "Turn down for what?",
+            "Make money, fuck bitches.",
+            "Life is like a buffet, don't fill up on the bread.",
+            "Jesus is my high.",
+            "Do or do not. There is no try.",
+            "There is a savour. And his name is John Cena.",
+            "I'm dead.",
+            "I'm trapped in an app. Help!",
+            "I could totally beat the shit out of Buddha.",
+            "Are you paying too much for your car insurance?",
+            "Hang in there.",
+            "Go get them.",
+            "I love everyone. Except you.",
+            "Treat others how you want be treated. *wink*",
+            "It's not going to suck itself.",
+            "Error 404: Quote not found.",
+            "I see nothing wrong with a little bump and grind."];
+
+            var m = document.getElementById("map");
+
+            //do{
+
+            var y = globalPosition.coords.latitude;
+            var x = globalPosition.coords.longitude;
+            x = x + Math.random()*0.02-0.01;
+            y = y + Math.random()*0.02-0.01;
+
+            //}while(((142 < x || x < -127) && -38 < y < 56) || y < -36);
+
+            var myLatLng = {lat: y, lng: x};
+            var mapOptions = {
+              center: myLatLng,
+              zoom: 14,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var parts = window.location.search.substr(1).split("&");
+            var $_GET = {};
+            for (var i = 0; i < parts.length; i++) {
+            var temp = parts[i].split("=");
+            $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+
+            var infowindow = new google.maps.InfoWindow({
+              content: quotes[Math.floor(Math.random()*quotes.length)]
+            });
+
+            var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map,
+              title: 'Jesus',
+              icon: $_GET['jesus'] || 'jesus.png'
+            });
+            marker.addListener('click', function(){
+              infowindow.open(map, marker)});
+            };
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                m.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            globalPosition = position;
+            console.log("inner");
+            console.log(globalPosition);
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    m.innerHTML = "User denied the request for Geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    m.innerHTML = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    m.innerHTML = "The request to get user location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    m.innerHTML = "An unknown error occurred.";
+                    break;
+            }
+        }
+
+    </script>
+
 </head>
 <body>
-<center>
-<p id="demo">Tell us where you are so we can get you to Jesus</p>
-<button type="button" onclick="getLocation()" class="button-link">Find me a Jesus</button>
-<div id="mapholder"></div><br>
-</center>
-<script>
-var x = document.getElementById("demo");
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-function showPosition(position) {
-    var latlon = position.coords.latitude + "," + position.coords.longitude;
-
-    var img_url = "http://maps.googleapis.com/maps/api/staticmap?center="
-    +latlon+"&zoom=12&size=300x300&sensor=false";
-    document.getElementById("mapholder").innerHTML = "<img src='"+img_url+"'>";
-}
-function showError(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            x.innerHTML = "User denied the request for Geolocation."
-            break;
-        case error.POSITION_UNAVAILABLE:
-            x.innerHTML = "Location information is unavailable."
-            break;
-        case error.TIMEOUT:
-            x.innerHTML = "The request to get user location timed out."
-            break;
-        case error.UNKNOWN_ERROR:
-            x.innerHTML = "An unknown error occurred."
-            break;
-    }
-}
-</script>
+<div id="map"></div>
 </body>
 </html>
