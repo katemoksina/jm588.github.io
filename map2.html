@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="style.css">
     <style>
         #map {
         width: 97vw;
-        height: 97vh;
+        height: 90vh;
         }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDb7up_GNBuZgdHir7_IAo6fOD4krA1zZc&signed_in=true"></script>
     <script>
-      function initialize() {
-        var mapCanvas = document.getElementById('map');
-        var quotes = [
+            var quotes = [
         "Y'all mothafuckas need Jesus.",
         "If you love something, never do it for free.",
         "Jet fuel can't melt steel beams.",
@@ -33,6 +32,9 @@
         "It's not going to suck itself.",
         "Error 404: Quote not found.",
         "I see nothing wrong with a little bump and grind."];
+
+      function initialize() {
+        var mapCanvas = document.getElementById('map');
         do{
             var x = Math.random()*360-180;
             var y = Math.random()*180-90;
@@ -49,9 +51,9 @@
         var temp = parts[i].split("=");
         $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
         var map = new google.maps.Map(mapCanvas, mapOptions);
-        var quote = quotes[Math.floor(Math.random()*quotes.length)]
+       
         var infowindow = new google.maps.InfoWindow({
-          content: quote 
+          content: generateQuote() 
         });
         var marker = new google.maps.Marker({
           position: myLatLng,
@@ -64,13 +66,21 @@
         };
       }
       google.maps.event.addDomListener(window, 'load', initialize);
+
+      function generateLink(){
+        window.location.href = "https://twitter.com/intent/tweet?text=I%20found%20Jesus%20and%20he%20told%20me%20'"+generateQuote()+"'"
+      }
+
+      function generateQuote(){
+         var quote = quotes[Math.floor(Math.random()*quotes.length)];
+         return quote
+      }
     </script>
 </head>
 <body>
-    <a class="twitter-share-button"
-      href="https://twitter.com/intent/tweet?text=I%20found%20Jesus%20and%20he%20told%20me">
-      Tweet</a>
 <div id="map"></div>
+<button type="button"
+      onclick="generateLink()" class="button-link">Tweet</button>
 </body>
 </html>
 
